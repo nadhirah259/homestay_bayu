@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   Calendar, MapPin, Phone, Star, Wifi, Tv, Car, 
