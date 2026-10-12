@@ -384,9 +384,32 @@ function BookingSystem({ settings, unavailableDates, db, user }) {
     if (true) {
       try {
         await addDoc(collection(db, COL_BOOKINGS), bookingData);
-        const text = `Helo Homestay Bayu!%0A%0ASaya ingin mengesahkan tempahan saya:%0ANama: ${formData.name}%0ANo Tel: ${formData.phone}%0A%0ATarikh Masuk: ${checkIn} (Anggaran ${formData.time || '15:00'})%0ATarikh Keluar: ${checkOut}%0AJumlah Malam: ${pricing.nights}%0ATetamu: ${formData.adults} Dewasa, ${formData.children} Kanak-kanak%0ANo Plat Kenderaan: ${formData.plateNo || '-'}%0A%0AHarga Keseluruhan: RM ${pricing.total}%0A%0ANota Tambahan: ${formData.notes || '-'}`;
-        window.open(`https://wa.me/${settings.ownerPhone}?text=${text}`, '_blank');
-        setStep(3);
+        
+        const message = `Helo Homestay Bayu!
+
+Saya ingin mengesahkan tempahan saya:
+Nama: ${formData.name}
+No Tel: ${formData.phone}
+
+Tarikh Masuk: ${checkIn} (Anggaran ${formData.time || '15:00'})
+Tarikh Keluar: ${checkOut}
+Jumlah Malam: ${pricing.nights}
+Tetamu: ${formData.adults} Dewasa, ${formData.children} Kanak-kanak
+No Plat Kenderaan: ${formData.plateNo || '-'}
+
+Harga Keseluruhan: RM ${pricing.total}
+
+Nota Tambahan: ${formData.notes || '-'}`;
+
+const phone = String(settings.ownerPhone).replace(/\D/g, '');
+
+const whatsappUrl =
+  `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+window.location.href = whatsappUrl;
+
+setStep(3);
+
       } catch (err) { console.error(err); }
     }
   };
