@@ -323,18 +323,44 @@ function BookingSystem({
   const todayStr = formatDate(today);
   const isDateUnavailable = (dateStr) => unavailableDates.has(dateStr);
 
-  const handleDateClick = (dateStr) => {
-    if (dateStr < todayStr || isDateUnavailable(dateStr)) return;
-    if (!checkIn || (checkIn && checkOut)) {
-      setCheckIn(dateStr); setCheckOut(null);
-    } else {
-      if (dateStr > checkIn) {
-        let current = checkIn; let isValid = true;
-        while (current < dateStr) { if (isDateUnavailable(current)) { isValid = false; break; } current = addDays(current, 1); }
-        if (isValid) setCheckOut(dateStr); else { setCheckIn(dateStr); setCheckOut(null); }
-      } else { setCheckIn(dateStr); }
+  
+const handleDateClick = (dateStr) => {
+  if (dateStr < todayStr) return;
+
+  // Sedang memilih check-in
+  if (!checkIn || checkOut) {
+    if (isDateUnavailable(dateStr)) return;
+
+    setCheckIn(dateStr);
+    setCheckOut(null);
+    return;
+  }
+
+  // Sedang memilih check-out
+  if (dateStr > checkIn) {
+    let current = checkIn;
+    let isValid = true;
+
+    while (current < dateStr) {
+      if (isDateUnavailable(current)) {
+        isValid = false;
+        break;
+      }
+      current = addDays(current, 1);
     }
-  };
+
+    if (isValid) {
+      setCheckOut(dateStr);
+    } else if (!isDateUnavailable(dateStr)) {
+      setCheckIn(dateStr);
+      setCheckOut(null);
+    }
+  } else if (!isDateUnavailable(dateStr)) {
+    setCheckIn(dateStr);
+    setCheckOut(null);
+  }
+};
+
 
   const renderCalendarDays = () => {
     const year = currentDate.getFullYear(); const month = currentDate.getMonth();
@@ -347,7 +373,19 @@ function BookingSystem({
     for (let i = 1; i <= daysInMonth; i++) {
       const dateStr = formatDate(new Date(year, month, i));
       const isPast = dateStr < todayStr;
-      const disabled = isPast || isDateUnavailable(dateStr);
+      const selectingCheckOut = Boolean(checkIn && !checkOut);
+
+const isNextGuestCheckIn = bookings.some(
+  booking =>
+    booking.checkIn === dateStr &&
+    booking.status !== 'rejected' &&
+    booking.status !== 'cancelled'
+);
+
+const disabled =
+  isPast ||
+  (isDateUnavailable(dateStr) &&
+    !(selectingCheckOut && isNextGuestCheckIn));
       let bgClass = "bg-white border border-stone-100"; let textClass = "text-stone-700";
       if (disabled) { bgClass = "bg-stone-100 border-none opacity-50"; textClass = "text-stone-400 line-through"; }
       else { bgClass = "hover:border-stone-800 hover:shadow-sm cursor-pointer"; }
