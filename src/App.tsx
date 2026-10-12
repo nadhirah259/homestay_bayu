@@ -303,7 +303,13 @@ function ReviewCard({ name, date, text, stars }) {
   );
 }
 
-function BookingSystem({ settings, unavailableDates, db, user }) {
+function BookingSystem({
+  settings,
+  unavailableDates,
+  bookings,
+  db,
+  user
+}) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
