@@ -164,11 +164,11 @@ export default function HomestayApp() {
 
       <AIChatbot settings={settings} />
 
-      <a href={`https://www.wasap.my/${settings.ownerPhone}/HomestayBayu`} target="_blank" rel="noreferrer" className="fixed bottom-6 right-6 md:bottom-10 md:right-10 bg-[#25D366] text-white p-4 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-2xl hover:scale-110 transition-all duration-300 z-50 flex items-center justify-center group" aria-label="Hubungi kami di WhatsApp">
+      <a href={`https://www.wasap.my/${settings.ownerPhone}/HomestayBayu`} target="_blank" rel="noreferrer" className="fixed bottom-6 right-6 md:bottom-10 md:right-10 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform group">
         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.622 2.94-6.562 6.56-6.562 1.758 0 3.411.685 4.653 1.93 1.241 1.244 1.926 2.895 1.926 4.653-.004 3.622-2.94 6.562-6.56 6.562zm3.593-4.908c-.197-.099-1.17-.578-1.352-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.89 7.89 0 0 0 13.601 2.326zM7.994 14.5A6.55 6.55 0 0 1 5.52 14l-3.046.8.81-2.973A6.56 6.56 0 0 1 1.5 7.926a6.56 6.56 0 0 1 13.118 0 6.56 6.56 0 0 1-6.624 6.574zm4.182-4.92c-.23-.116-1.354-.667-1.562-.744-.208-.077-.36-.115-.512.115-.152.23-.588.744-.72.897-.133.152-.266.171-.496.057-.23-.115-.969-.357-1.844-1.137-.682-.607-1.143-1.356-1.276-1.583-.133-.23-.014-.354.101-.469.104-.102.23-.266.345-.4.115-.133.152-.23.229-.383.077-.153.038-.287-.02-.403-.057-.115-.512-1.235-.702-1.694-.185-.446-.373-.384-.512-.392l-.437-.008a.84.84 0 0 0-.61.286c-.21.23-.801.781-.801 1.899s.82 2.2.935 2.351c.115.15 1.616 2.465 3.91 3.455.546.236.972.377 1.303.481.548.174 1.046.149 1.439.09.439-.065 1.355-.553 1.545-1.088.191-.535.191-.99.133-1.086-.058-.096-.21-.153-.442-.269z"/>
         </svg>
-        <span className="absolute right-full mr-4 bg-white text-stone-800 text-sm font-semibold py-2 px-4 rounded-xl shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap">
+        <span className="absolute right-full mr-4 bg-white text-stone-800 text-sm font-semibold py-2 px-4 rounded-xl shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200">
           Tanya kami di WhatsApp!
         </span>
       </a>
@@ -303,13 +303,7 @@ function ReviewCard({ name, date, text, stars }) {
   );
 }
 
-function BookingSystem({
-  settings,
-  unavailableDates,
-  bookings,
-  db,
-  user
-}) {
+function BookingSystem({ settings, unavailableDates, db, user }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
@@ -323,44 +317,18 @@ function BookingSystem({
   const todayStr = formatDate(today);
   const isDateUnavailable = (dateStr) => unavailableDates.has(dateStr);
 
-  
-const handleDateClick = (dateStr) => {
-  if (dateStr < todayStr) return;
-
-  // Sedang memilih check-in
-  if (!checkIn || checkOut) {
-    if (isDateUnavailable(dateStr)) return;
-
-    setCheckIn(dateStr);
-    setCheckOut(null);
-    return;
-  }
-
-  // Sedang memilih check-out
-  if (dateStr > checkIn) {
-    let current = checkIn;
-    let isValid = true;
-
-    while (current < dateStr) {
-      if (isDateUnavailable(current)) {
-        isValid = false;
-        break;
-      }
-      current = addDays(current, 1);
+  const handleDateClick = (dateStr) => {
+    if (dateStr < todayStr || isDateUnavailable(dateStr)) return;
+    if (!checkIn || (checkIn && checkOut)) {
+      setCheckIn(dateStr); setCheckOut(null);
+    } else {
+      if (dateStr > checkIn) {
+        let current = checkIn; let isValid = true;
+        while (current < dateStr) { if (isDateUnavailable(current)) { isValid = false; break; } current = addDays(current, 1); }
+        if (isValid) setCheckOut(dateStr); else { setCheckIn(dateStr); setCheckOut(null); }
+      } else { setCheckIn(dateStr); }
     }
-
-    if (isValid) {
-      setCheckOut(dateStr);
-    } else if (!isDateUnavailable(dateStr)) {
-      setCheckIn(dateStr);
-      setCheckOut(null);
-    }
-  } else if (!isDateUnavailable(dateStr)) {
-    setCheckIn(dateStr);
-    setCheckOut(null);
-  }
-};
-
+  };
 
   const renderCalendarDays = () => {
     const year = currentDate.getFullYear(); const month = currentDate.getMonth();
@@ -373,19 +341,7 @@ const handleDateClick = (dateStr) => {
     for (let i = 1; i <= daysInMonth; i++) {
       const dateStr = formatDate(new Date(year, month, i));
       const isPast = dateStr < todayStr;
-      const selectingCheckOut = Boolean(checkIn && !checkOut);
-
-const isNextGuestCheckIn = bookings.some(
-  booking =>
-    booking.checkIn === dateStr &&
-    booking.status !== 'rejected' &&
-    booking.status !== 'cancelled'
-);
-
-const disabled =
-  isPast ||
-  (isDateUnavailable(dateStr) &&
-    !(selectingCheckOut && isNextGuestCheckIn));
+      const disabled = isPast || isDateUnavailable(dateStr);
       let bgClass = "bg-white border border-stone-100"; let textClass = "text-stone-700";
       if (disabled) { bgClass = "bg-stone-100 border-none opacity-50"; textClass = "text-stone-400 line-through"; }
       else { bgClass = "hover:border-stone-800 hover:shadow-sm cursor-pointer"; }
@@ -398,7 +354,9 @@ const disabled =
          if (valid) bgClass = "bg-stone-100 border-stone-200";
       }
       days.push(
-        <button key={dateStr} disabled={disabled} onClick={() => handleDateClick(dateStr)} onMouseEnter={() => setHoverDate(dateStr)} onMouseLeave={() => setHoverDate(null)} className={`h-10 w-full rounded-lg text-sm flex items-center justify-center transition-all ${bgClass} ${textClass}`}>{i}</button>
+        <button key={dateStr} disabled={disabled} onClick={() => handleDateClick(dateStr)} onMouseEnter={() => setHoverDate(dateStr)} onMouseLeave={() => setHoverDate(null)} className={`h-10 w-full rounded-xl text-sm font-medium transition ${bgClass} ${textClass}`}>
+          {i}
+        </button>
       );
     }
     return days;
@@ -493,10 +451,10 @@ setStep(3);
   if (step === 2) {
     return (
       <form onSubmit={handleSubmit} className="animate-fade-in space-y-5">
-        <button type="button" onClick={() => setStep(1)} className="flex items-center text-sm text-stone-500 hover:text-stone-800 mb-6 font-medium"><ChevronLeft size={16} className="mr-1" /> Kembali ke Kalendar</button>
+        <button type="button" onClick={() => setStep(1)} className="flex items-center text-sm text-stone-500 hover:text-stone-800 mb-6 font-medium"><ChevronLeft size={16} className="mr-1" /> Kembali ke kalendar</button>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div><label className="block text-sm font-medium text-stone-700 mb-1">Nama Penuh</label><input required type="text" value={formData.name} onChange={e=>setFormData({...formData, name: e.target.value})} className="w-full border-gray-300 rounded-xl p-3 bg-stone-50 border focus:ring-2 focus:ring-stone-500 outline-none" /></div>
-          <div><label className="block text-sm font-medium text-stone-700 mb-1">No. Telefon / WhatsApp</label><input required type="tel" value={formData.phone} onChange={e=>setFormData({...formData, phone: e.target.value})} className="w-full border-gray-300 rounded-xl p-3 bg-stone-50 border focus:ring-2 focus:ring-stone-500 outline-none" /></div>
+          <div><label className="block text-sm font-medium text-stone-700 mb-1">Nama Penuh</label><input required type="text" value={formData.name} onChange={e=>setFormData({...formData, name: e.target.value})} className="w-full p-3 border border-gray-300 rounded-xl bg-stone-50 focus:border-stone-800 outline-none" /></div>
+          <div><label className="block text-sm font-medium text-stone-700 mb-1">No. Telefon / WhatsApp</label><input required type="tel" value={formData.phone} onChange={e=>setFormData({...formData, phone: e.target.value})} className="w-full p-3 border border-gray-300 rounded-xl bg-stone-50 focus:border-stone-800 outline-none" /></div>
         </div>
         <div className="grid grid-cols-2 gap-5">
           <div>
@@ -517,15 +475,15 @@ setStep(3);
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-           <div><label className="block text-sm font-medium text-stone-700 mb-1">Anggaran Waktu Tiba (ETA)</label><input type="time" value={formData.time} onChange={e=>setFormData({...formData, time: e.target.value})} className="w-full border-gray-300 rounded-xl p-3 bg-stone-50 border focus:ring-2 focus:ring-stone-500 outline-none" /></div>
-           <div><label className="block text-sm font-medium text-stone-700 mb-1">No. Plat Kenderaan (Pilihan)</label><input type="text" placeholder="Contoh: BXY 1234" value={formData.plateNo} onChange={e=>setFormData({...formData, plateNo: e.target.value})} className="w-full border-gray-300 rounded-xl p-3 bg-stone-50 border focus:ring-2 focus:ring-stone-500 outline-none" /></div>
+           <div><label className="block text-sm font-medium text-stone-700 mb-1">Anggaran Waktu Tiba (ETA)</label><input type="time" value={formData.time} onChange={e=>setFormData({...formData, time: e.target.value})} className="w-full p-3 border border-gray-300 rounded-xl bg-stone-50 focus:border-stone-800 outline-none" /></div>
+           <div><label className="block text-sm font-medium text-stone-700 mb-1">No. Plat Kenderaan (Pilihan)</label><input type="text" placeholder="Contoh: BXY 1234" value={formData.plateNo} onChange={e=>setFormData({...formData, plateNo: e.target.value})} className="w-full p-3 border border-gray-300 rounded-xl bg-stone-50 focus:border-stone-800 outline-none" /></div>
         </div>
-        <div><label className="block text-sm font-medium text-stone-700 mb-1">Nota Tambahan (Pilihan)</label><textarea rows="2" value={formData.notes} onChange={e=>setFormData({...formData, notes: e.target.value})} className="w-full border-gray-300 rounded-xl p-3 bg-stone-50 border focus:ring-2 focus:ring-stone-500 outline-none" placeholder="Sebarang permintaan khusus..."></textarea></div>
+        <div><label className="block text-sm font-medium text-stone-700 mb-1">Nota Tambahan (Pilihan)</label><textarea rows="2" value={formData.notes} onChange={e=>setFormData({...formData, notes: e.target.value})} className="w-full p-3 border border-gray-300 rounded-xl bg-stone-50 focus:border-stone-800 outline-none resize-none" /></div>
         <div className="mt-8 p-6 bg-stone-800 text-white rounded-2xl shadow-lg">
           <div className="flex justify-between text-sm mb-2 opacity-80"><span>{checkIn} hingga {checkOut}</span> <span>{pricing.nights} Malam</span></div>
           <div className="flex justify-between font-bold text-2xl pt-4 border-t border-stone-600"><span>Jumlah Bayaran:</span><span>RM {pricing.total}</span></div>
         </div>
-        <button type="submit" className="w-full py-4 bg-[#25D366] text-white rounded-xl font-bold text-lg hover:bg-[#20bd5a] shadow-md transition flex items-center justify-center">Hantar ke WhatsApp <ChevronRight className="ml-2" size={20}/></button>
+        <button type="submit" className="w-full py-4 bg-[#25D366] text-white rounded-xl font-bold text-lg hover:bg-[#20bd5a] shadow-md transition flex items-center justify-center">Hantar ke WhatsApp <Send size={18} className="ml-2" /></button>
       </form>
     );
   }
@@ -536,7 +494,7 @@ setStep(3);
         <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto mb-6" />
         <h3 className="text-2xl font-bold text-stone-800 mb-2">Tempahan Direkodkan!</h3>
         <p className="text-stone-500 mb-8 max-w-sm mx-auto">Sila lengkapkan perbualan di WhatsApp untuk pengesahan pembayaran dan pendaftaran homestay.</p>
-        <button onClick={() => { setStep(1); setCheckIn(null); setCheckOut(null); setFormData({name: '', phone: '', adults: 2, children: 0, time: '', plateNo: '', notes: ''}); }} className="px-8 py-3 bg-stone-100 text-stone-800 rounded-full font-medium hover:bg-stone-200 transition">Buat Tempahan Baharu</button>
+        <button onClick={() => { setStep(1); setCheckIn(null); setCheckOut(null); setFormData({name: '', phone: '', adults: 2, children: 0, time: '', plateNo: '', notes: ''}); }} className="px-8 py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 transition">Buat Tempahan Baru</button>
       </div>
     );
   }
@@ -558,8 +516,7 @@ function AIChatbot({ settings }) {
     setMessages(newMessages); setInput(''); setIsTyping(true);
 
     const systemPrompt = `Anda adalah "Bayu", pembantu maya yang mesra untuk Homestay Bayu. 
-    Maklumat Homestay Bayu: Lokasi: ${settings.address}, Harga: RM${settings.weekdayPrice} semalam (Hari Biasa), RM${settings.weekendPrice} semalam (Hujung Minggu/Cuti). Promosi: RM${settings.promoPrice} semalam jika tempah 2 malam ke atas.
-    Sila jawab soalan pelanggan dengan ringkas dan mesra dalam Bahasa Melayu.`;
+    Maklumat Homestay Bayu: Lokasi: ${settings.address}, Harga: RM${settings.weekdayPrice} semalam (Hari Biasa), RM${settings.weekendPrice} semalam (Hujung Minggu/Cuti). Promosi: RM${settings.promoPrice} semalam (tempahan 2 malam ke atas). Sila jawab soalan pelanggan dengan ringkas dan mesra dalam Bahasa Melayu.`;
 
     try {
       const formattedHistory = newMessages.map(msg => ({ role: msg.role === 'user' ? 'user' : 'model', parts: [{ text: msg.text }] }));
@@ -585,7 +542,9 @@ function AIChatbot({ settings }) {
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl p-3 text-sm shadow-sm ${msg.role === 'user' ? 'bg-stone-800 text-white rounded-br-none' : 'bg-white border border-stone-200 text-stone-700 rounded-bl-none whitespace-pre-line'}`}>{msg.text}</div>
+                <div className={`max-w-[85%] rounded-2xl p-3 text-sm shadow-sm ${msg.role === 'user' ? 'bg-stone-800 text-white rounded-br-none' : 'bg-white border border-stone-200 text-stone-700 rounded-bl-none'}`}>
+                  {msg.text}
+                </div>
               </div>
             ))}
             {isTyping && (
@@ -600,7 +559,7 @@ function AIChatbot({ settings }) {
             <div ref={messagesEndRef} />
           </div>
           <div className="p-3 bg-white border-t border-stone-100 flex items-center">
-            <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSend()} placeholder="Tanya soalan..." className="flex-1 bg-stone-100 border-none rounded-full px-4 py-2 text-sm outline-none" />
+            <input type="text" value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSend()} placeholder="Tanya soalan..." className="flex-1 bg-stone-100 border border-stone-200 rounded-full px-4 py-2 text-sm outline-none focus:border-stone-400" />
             <button onClick={handleSend} disabled={isTyping} className="ml-2 p-2 bg-stone-800 text-white rounded-full disabled:opacity-50"><Send size={16} /></button>
           </div>
         </div>
@@ -622,8 +581,8 @@ function AdminPanel({ settings, bookings, blockedDates, isAdminLoggedIn, setIsAd
         <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-stone-100 text-center">
           <LogIn className="w-16 h-16 mx-auto text-stone-300 mb-6" />
           <h2 className="text-2xl font-bold mb-6 text-stone-800">Panel Pemilik</h2>
-          <input type="password" placeholder="Masukkan PIN Admin" value={pin} onChange={e => setPin(e.target.value)} onKeyPress={e => e.key === 'Enter' && (pin === 'admin123' && setIsAdminLoggedIn(true))} className="w-full text-center text-lg p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-stone-800 outline-none" />
-          <button onClick={() => pin === 'admin123' ? setIsAdminLoggedIn(true) : alert('PIN Salah')} className="w-full py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 transition">Log Masuk</button>
+          <input type="password" placeholder="Masukkan PIN Admin" value={pin} onChange={e => setPin(e.target.value)} onKeyPress={e => e.key === 'Enter' && (pin === 'admin123' && setIsAdminLoggedIn(true))} className="w-full p-3 border border-stone-200 rounded-xl mb-4 focus:border-stone-800 outline-none" />
+          <button onClick={() => pin === 'admin123' ? setIsAdminLoggedIn(true) : alert('PIN Salah')} className="w-full py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 transition">Masuk</button>
         </div>
       </div>
     );
@@ -634,9 +593,9 @@ function AdminPanel({ settings, bookings, blockedDates, isAdminLoggedIn, setIsAd
        <div className="w-full md:w-64 space-y-2">
          <div className="p-4 bg-stone-900 text-white rounded-2xl mb-6 shadow-lg"><p className="font-medium">Selamat kembali,</p><h3 className="text-xl font-bold font-serif">Admin Bayu</h3></div>
          <nav className="space-y-1">
-           <button onClick={()=>setActiveTab('bookings')} className={`w-full text-left px-4 py-3 rounded-lg flex items-center font-medium transition ${activeTab==='bookings'?'bg-stone-200 text-stone-900':'text-stone-600 hover:bg-stone-100'}`}><CheckSquare size={18} className="mr-3"/> Senarai Tempahan</button>
-           <button onClick={()=>setActiveTab('calendar')} className={`w-full text-left px-4 py-3 rounded-lg flex items-center font-medium transition ${activeTab==='calendar'?'bg-stone-200 text-stone-900':'text-stone-600 hover:bg-stone-100'}`}><Calendar size={18} className="mr-3"/> Urus Kalendar</button>
-           <button onClick={()=>setActiveTab('settings')} className={`w-full text-left px-4 py-3 rounded-lg flex items-center font-medium transition ${activeTab==='settings'?'bg-stone-200 text-stone-900':'text-stone-600 hover:bg-stone-100'}`}><Settings size={18} className="mr-3"/> Tetapan Harga</button>
+           <button onClick={()=>setActiveTab('bookings')} className={`w-full text-left px-4 py-3 rounded-lg flex items-center font-medium transition ${activeTab==='bookings'?'bg-stone-200 text-stone-900':'text-stone-600 hover:bg-stone-100'}`}><CheckSquare size={17} className="mr-2" /> Tempahan</button>
+           <button onClick={()=>setActiveTab('calendar')} className={`w-full text-left px-4 py-3 rounded-lg flex items-center font-medium transition ${activeTab==='calendar'?'bg-stone-200 text-stone-900':'text-stone-600 hover:bg-stone-100'}`}><Calendar size={17} className="mr-2" /> Kalendar</button>
+           <button onClick={()=>setActiveTab('settings')} className={`w-full text-left px-4 py-3 rounded-lg flex items-center font-medium transition ${activeTab==='settings'?'bg-stone-200 text-stone-900':'text-stone-600 hover:bg-stone-100'}`}><Settings size={17} className="mr-2" /> Tetapan</button>
          </nav>
        </div>
        <div className="flex-1 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-stone-100 min-h-[60vh]">
@@ -668,9 +627,9 @@ function AdminBookings({ bookings, db }) {
   const generateAIReply = async (booking) => {
     if (aiReplyBookingId === booking.id) { setAiReplyBookingId(null); return; }
     setAiReplyBookingId(booking.id); setIsGeneratingReply(true); setAiReplyText("");
-    const prompt = `Tulis draf mesej WhatsApp balasan mesra untuk pelanggan ${booking.name} yang baru menempah Homestay Bayu. Tarikh: ${booking.checkIn} hingga ${booking.checkOut}. Harga: RM ${booking.totalPrice}. Nota Pelanggan: ${booking.notes || "Tiada"}. Sahkan tempahan dan berikan no akaun Maybank 1234567890 (Homestay Bayu).`;
+    const prompt = `Tulis draf mesej WhatsApp balasan mesra untuk pelanggan ${booking.name} yang baru menempah Homestay Bayu. Tarikh: ${booking.checkIn} hingga ${booking.checkOut}. Harga: RM ${booking.totalPrice}.`;
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }] }) });
       const data = await response.json();
       setAiReplyText(data.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, ralat AI.");
     } catch (error) { setAiReplyText("Gagal berhubung dengan AI."); }
@@ -684,27 +643,29 @@ function AdminBookings({ bookings, db }) {
       <h3 className="text-2xl font-bold mb-6 text-stone-800">Senarai Tempahan</h3>
       <div className="overflow-x-auto rounded-xl border border-stone-200">
         <table className="w-full text-left border-collapse">
-          <thead><tr className="bg-stone-50 border-b border-stone-200"><th className="p-4 text-stone-600 text-sm">Tarikh / ID</th><th className="p-4 text-stone-600 text-sm">Pelanggan</th><th className="p-4 text-stone-600 text-sm">Penginapan</th><th className="p-4 text-stone-600 text-sm">Status</th><th className="p-4 text-stone-600 text-sm">Tindakan</th></tr></thead>
+          <thead><tr className="bg-stone-50 border-b border-stone-200"><th className="p-4 text-stone-600 text-sm">Tarikh / ID</th><th className="p-4 text-stone-600 text-sm">Pelanggan</th><th className="p-4 text-stone-600 text-sm">Tarikh Penginapan</th><th className="p-4 text-stone-600 text-sm">Status</th><th className="p-4 text-stone-600 text-sm">Tindakan</th></tr></thead>
           <tbody className="divide-y divide-stone-100">
             {sortedBookings.length === 0 ? (<tr><td colSpan="5" className="p-8 text-center text-stone-400">Tiada tempahan direkodkan.</td></tr>) : (
               sortedBookings.map(b => (
                 <tr key={b.id} className="hover:bg-stone-50 transition">
-                  <td className="p-4 align-top"><div className="font-medium text-stone-800">{new Date(b.createdAt).toLocaleDateString('ms-MY')}</div><div className="text-xs text-stone-400 font-mono mt-1">{b.id.substring(0,8)}</div></td>
-                  <td className="p-4 align-top"><div className="font-bold text-stone-800">{b.name}</div><div className="text-sm text-stone-600 flex items-center mt-1"><Phone size={12} className="mr-1"/> {b.phone}</div><div className="text-xs text-stone-400 mt-1">{b.adults} Dewasa, {b.children} Kanak-kanak</div></td>
-                  <td className="p-4 align-top"><div className="text-sm font-medium text-stone-800 bg-stone-100 px-2 py-1 rounded inline-block mb-1">{b.checkIn} - {b.checkOut}</div><div className="text-sm text-stone-600 mt-1">{b.nights} Malam • RM {b.totalPrice}</div></td>
+                  <td className="p-4 align-top"><div className="font-medium text-stone-800">{new Date(b.createdAt).toLocaleDateString('ms-MY')}</div><div className="text-xs text-stone-400 font-mono mt-1">{b.id.slice(0, 6)}</div></td>
+                  <td className="p-4 align-top"><div className="font-bold text-stone-800">{b.name}</div><div className="text-sm text-stone-600 flex items-center mt-1"><Phone size={12} className="mr-1" />{b.phone}</div></td>
+                  <td className="p-4 align-top"><div className="text-sm font-medium text-stone-800 bg-stone-100 px-2 py-1 rounded inline-block mb-1">{b.checkIn} - {b.checkOut}</div><div className="text-xs text-stone-500">{b.nights} malam</div></td>
                   <td className="p-4 align-top">{getStatusBadge(b.status)}</td>
                   <td className="p-4 align-top">
                     <div className="flex flex-wrap gap-2">
                       {b.status !== 'confirmed' && <button onClick={() => updateStatus(b.id, 'confirmed')} className="px-3 py-1.5 bg-emerald-600 text-white rounded text-xs font-medium hover:bg-emerald-700 shadow-sm">Sahkan</button>}
                       {b.status === 'pending' && <button onClick={() => updateStatus(b.id, 'rejected')} className="px-3 py-1.5 bg-rose-600 text-white rounded text-xs font-medium hover:bg-rose-700 shadow-sm">Tolak</button>}
                       <button onClick={() => deleteBooking(b.id)} className="px-3 py-1.5 bg-stone-200 text-stone-600 rounded text-xs font-medium hover:bg-stone-300 border border-stone-300">Padam</button>
-                      <button onClick={() => generateAIReply(b)} className="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded text-xs hover:bg-indigo-100 flex items-center border border-indigo-200 font-medium shadow-sm"><Sparkles size={12} className="mr-1" /> {aiReplyBookingId === b.id ? 'Tutup AI' : 'Balasan AI'}</button>
+                      <button onClick={() => generateAIReply(b)} className="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded text-xs hover:bg-indigo-100 flex items-center border border-indigo-200 font-medium">
+                        <Sparkles size={12} className="mr-1" /> AI
+                      </button>
                     </div>
                     {aiReplyBookingId === b.id && (
                       <div className="mt-3 p-3 bg-indigo-50 border border-indigo-100 rounded-lg text-xs space-y-2 animate-fade-in">
                          {isGeneratingReply ? (<div className="flex items-center text-indigo-600"><Loader2 size={14} className="animate-spin mr-2"/> Menjana mesej pintar...</div>) : (
                             <><textarea className="w-full h-32 p-2 border border-indigo-200 rounded bg-white text-stone-700 font-sans outline-none" value={aiReplyText} onChange={(e) => setAiReplyText(e.target.value)} />
-                               <div className="flex justify-end gap-2"><button onClick={() => { navigator.clipboard.writeText(aiReplyText); alert("Mesej telah berjaya disalin!"); }} className="px-3 py-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center font-medium shadow-sm transition"><Copy size={12} className="mr-1"/> Salin Teks</button></div>
+                               <div className="flex justify-end gap-2"><button onClick={() => { navigator.clipboard.writeText(aiReplyText); alert("Mesej telah berjaya disalin!"); }} className="px-3 py-1.5 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-700">Salin</button><button onClick={() => setAiReplyBookingId(null)} className="px-3 py-1.5 bg-stone-200 text-stone-700 rounded text-xs hover:bg-stone-300">Tutup</button></div>
                             </>
                          )}
                       </div>
@@ -732,12 +693,12 @@ function AdminCalendar({ blockedDates, bookings, db }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
          <div>
             <h4 className="font-bold text-lg mb-4 text-stone-800">Sekat Tarikh Manual</h4>
-            <form onSubmit={handleBlockDate} className="flex gap-2 mb-6"><input type="date" required value={dateToBlock} onChange={e=>setDateToBlock(e.target.value)} className="flex-1 p-2 border border-gray-300 rounded-lg outline-none" /><button type="submit" className="px-4 py-2 bg-stone-800 text-white rounded-lg font-bold">Sekat</button></form>
+            <form onSubmit={handleBlockDate} className="flex gap-2 mb-6"><input type="date" required value={dateToBlock} onChange={e=>setDateToBlock(e.target.value)} className="flex-1 p-2 border border-stone-200 rounded-xl" /><button type="submit" className="px-4 py-2 bg-stone-800 text-white rounded-xl font-medium">Tambah</button></form>
             <h5 className="font-bold text-sm mb-3 text-stone-700">Senarai Tarikh Disekat Secara Manual:</h5>
             <ul className="space-y-2 border border-stone-100 rounded-xl overflow-hidden divide-y divide-stone-100">
               {blockedDates.length === 0 ? <li className="p-4 text-stone-400 text-sm">Tiada tarikh disekat.</li> : 
                 [...blockedDates].sort((a,b) => a.date > b.date ? 1 : -1).map(b => (
-                  <li key={b.id} className="p-4 flex justify-between items-center bg-stone-50"><span className="font-medium text-stone-800">{b.date}</span><button onClick={()=>handleUnblock(b.id)} className="text-rose-500 font-semibold text-sm">Buka Semula</button></li>
+                  <li key={b.id} className="p-4 flex justify-between items-center bg-stone-50"><span className="font-medium text-stone-800">{b.date}</span><button onClick={()=>handleUnblock(b.id)} className="text-xs text-rose-600 hover:text-rose-700">Buang</button></li>
                 ))
               }
             </ul>
@@ -750,7 +711,7 @@ function AdminCalendar({ blockedDates, bookings, db }) {
                  <li key={b.id} className="p-4 border-l-4 border-emerald-500 bg-emerald-50/50 rounded-r-xl border-y border-r border-emerald-100">
                    <div className="flex justify-between items-start">
                      <div><div className="font-bold text-stone-800">{b.name}</div><div className="text-sm text-stone-600">{b.phone}</div></div>
-                     <div className="text-right"><div className="text-sm font-semibold bg-white px-2 py-1 rounded-md border border-emerald-200 text-emerald-900 shadow-sm">{b.checkIn} - {b.checkOut}</div><div className="text-xs text-stone-500 mt-1">{b.nights} Malam</div></div>
+                     <div className="text-right"><div className="text-sm font-semibold bg-white px-2 py-1 rounded-md border border-emerald-200 text-emerald-900 shadow-sm">{b.checkIn} - {b.checkOut}</div></div>
                    </div>
                  </li>
                ))
@@ -779,15 +740,15 @@ function AdminSettings({ initialSettings, db }) {
         <div>
           <h4 className="font-bold text-lg border-b pb-2 mb-4 text-stone-800">Kadar Harga (RM)</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div><label className="block text-sm font-medium mb-1">Hari Biasa</label><input required type="number" value={formData.weekdayPrice || 0} onChange={e=>setFormData({...formData, weekdayPrice: Number(e.target.value)})} className="w-full border-gray-300 rounded-lg p-2.5 bg-stone-50 border outline-none" /></div>
-            <div><label className="block text-sm font-medium mb-1">Hujung Minggu / Cuti</label><input required type="number" value={formData.weekendPrice || 0} onChange={e=>setFormData({...formData, weekendPrice: Number(e.target.value)})} className="w-full border-gray-300 rounded-lg p-2.5 bg-stone-50 border outline-none" /></div>
-            <div><label className="block text-sm font-medium text-amber-700 mb-1">Harga Promosi ({'>'}1 Mlm)</label><input required type="number" value={formData.promoPrice || 0} onChange={e=>setFormData({...formData, promoPrice: Number(e.target.value)})} className="w-full border-amber-300 rounded-lg p-2.5 bg-amber-50 border outline-none" /></div>
+            <div><label className="block text-sm font-medium mb-1">Hari Biasa</label><input required type="number" value={formData.weekdayPrice || 0} onChange={e=>setFormData({...formData, weekdayPrice: Number(e.target.value)})} className="w-full p-3 border border-stone-200 rounded-xl" /></div>
+            <div><label className="block text-sm font-medium mb-1">Hujung Minggu / Cuti</label><input required type="number" value={formData.weekendPrice || 0} onChange={e=>setFormData({...formData, weekendPrice: Number(e.target.value)})} className="w-full p-3 border border-stone-200 rounded-xl" /></div>
+            <div><label className="block text-sm font-medium text-amber-700 mb-1">Harga Promosi ({'>'}1 Mlm)</label><input required type="number" value={formData.promoPrice || 0} onChange={e=>setFormData({...formData, promoPrice: Number(e.target.value)})} className="w-full p-3 border border-stone-200 rounded-xl" /></div>
           </div>
         </div>
         <div>
           <h4 className="font-bold text-lg border-b pb-2 mb-4 mt-8 text-stone-800">Lokasi & Peta</h4>
-           <label className="block text-sm font-medium mb-1">Alamat Penuh Homestay</label><textarea required value={formData.address || ''} onChange={e=>setFormData({...formData, address: e.target.value})} className="w-full max-w-md border-gray-300 rounded-lg p-3 bg-stone-50 border h-24 mb-4 outline-none"></textarea>
-           <label className="block text-sm font-medium mb-1">Pautan Google Maps</label><input required type="url" value={formData.googleMapsLink || ''} onChange={e=>setFormData({...formData, googleMapsLink: e.target.value})} className="w-full max-w-md border-gray-300 rounded-lg p-2.5 bg-stone-50 border outline-none" />
+           <label className="block text-sm font-medium mb-1">Alamat Penuh Homestay</label><textarea required value={formData.address || ''} onChange={e=>setFormData({...formData, address: e.target.value})} className="w-full p-3 border border-stone-200 rounded-xl mb-4" rows="4" />
+           <label className="block text-sm font-medium mb-1">Pautan Google Maps</label><input required type="url" value={formData.googleMapsLink || ''} onChange={e=>setFormData({...formData, googleMapsLink: e.target.value})} className="w-full p-3 border border-stone-200 rounded-xl" />
         </div>
         <button type="submit" disabled={isSaving} className="px-8 py-3 bg-stone-800 text-white rounded-xl font-bold hover:bg-stone-700 disabled:opacity-50">{isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}</button>
       </div>
